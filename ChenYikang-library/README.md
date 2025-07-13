@@ -1,6 +1,4 @@
-# FIT5032_2025_Yikang_Chen_35523182
-
-# fit5032-week3
+# fit5032-week2
 
 This template should help get you started developing with Vue 3 in Vite.
 
