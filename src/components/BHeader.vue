@@ -5,14 +5,51 @@
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
+          <router-link to="/" class="nav-link" active-class="active">Home (Week 5)</router-link>
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+        <li class="nav-item">
+          <router-link to="/about" class="nav-link" active-class="active">About</router-link>
+        </li>
+        <li v-if="!isAuthenticated" class="nav-item">
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        </li>
+        <li v-else class="nav-item">
+          <a href="#" @click.prevent="handleLogout" class="nav-link">Logout</a>
+        </li>
+        <li class="nav-item">
+          <router-link to="/firelogin" class="nav-link" active-class="active">Firebase Login</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/fireregister" class="nav-link" active-class="active">Firebase Register</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/addbook" class="nav-link" active-class="active">Add Book</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/managebooks" class="nav-link" active-class="active">Manage Books</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/WeatherCheck" class="nav-link" active-class="active">Get Weather</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/CountBookAPI" class="nav-link" active-class="active">Count Book API</router-link>
+        </li>
       </ul>
     </header>
   </div>
 </template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+import { isAuthenticated, logout } from '../auth'
+
+const router = useRouter()
+
+const handleLogout = () => {
+  logout()
+  router.push('/login')
+}
+</script>
 
 <style scoped>
 .b-example-divider {

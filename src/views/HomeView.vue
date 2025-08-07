@@ -6,9 +6,11 @@ import Column from 'primevue/column'
 const formData = ref({
   username: '',
   password: '',
+  confirmPassword: '',
   isAustralian: false,
   reason: '',
-  gender: ''
+  gender: '',
+  suburb: 'Clayton'
 })
 
 const submittedCards = ref([])
@@ -16,7 +18,8 @@ const submittedCards = ref([])
 const submitForm = () => {
   validateName(true)
   validatePassword(true)
-  if (!errors.value.username && !errors.value.password) {
+  validateConfirmPassword(true)
+  if (!errors.value.username && !errors.value.password && !errors.value.confirmPassword) {
     submittedCards.value.push({ ...formData.value })
     clearForm()
   }
@@ -26,19 +29,24 @@ const clearForm = () => {
   formData.value = {
     username: '',
     password: '',
+    confirmPassword: '',
     isAustralian: false,
     reason: '',
-    gender: ''
+    gender: '',
+    suburb: 'Clayton'
   }
 }
 
 const errors = ref({
   username: null,
   password: null,
+  confirmPassword: null,
   resident: null,
   gender: null,
   reason: null
 })
+
+const friendMessage = ref('')
 
 const validateName = (blur) => {
   if (formData.value.username.length < 3) {
@@ -68,6 +76,36 @@ const validatePassword = (blur) => {
     if (blur) errors.value.password = 'Password must contain at least one special character.'
   } else {
     errors.value.password = null
+  }
+}
+
+/**
+ * Confirm password validation function that checks if the password and confirm password fields match.
+ * @param blur: boolean - If true, the function will display an error message if the passwords do not match.
+ */
+const validateConfirmPassword = (blur) => {
+  if (formData.value.password !== formData.value.confirmPassword) {
+    if (blur) errors.value.confirmPassword = 'Passwords do not match.'
+  } else {
+    errors.value.confirmPassword = null
+  }
+}
+
+/**
+ * Reason for joining validation function that checks if the reason is too short.
+ * @param blur: boolean - If true, the function will display an error message if the reason is too short.
+ */
+const validateReason = (blur) => {
+  if (formData.value.reason.length < 10) {
+    if (blur) errors.value.reason = 'Reason must be at least 10 characters'
+  } else {
+    errors.value.reason = null
+  }
+
+  if (formData.value.reason.toLowerCase().includes('friend')) {
+    friendMessage.value = 'Great to have a friend'
+  } else {
+    friendMessage.value = ''
   }
 }
 </script>
@@ -103,11 +141,25 @@ const validatePassword = (blur) => {
                 type="password"
                 class="form-control"
                 id="password"
+                v-model="formData.password"
                 @blur="() => validatePassword(true)"
                 @input="() => validatePassword(false)"
-                v-model="formData.password"
               />
               <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+              <label for="confirm-password" class="form-label">Confirm password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirm-password"
+                v-model="formData.confirmPassword"
+                @blur="() => validateConfirmPassword(true)"
+              />
+              <div v-if="errors.confirmPassword" class="text-danger">
+                {{ errors.confirmPassword }}
+              </div>
             </div>
           </div>
           <div class="row mb-3">
@@ -138,8 +190,18 @@ const validatePassword = (blur) => {
               id="reason"
               rows="3"
               v-model="formData.reason"
+              @blur="() => validateReason(true)"
+              @input="() => validateReason(false)"
             ></textarea>
+            <div v-if="errors.reason" class="text-danger">{{ errors.reason }}</div>
+            <div v-if="friendMessage" class="text-success">{{ friendMessage }}</div>
           </div>
+
+          <div class="mb-3">
+            <label for="suburb" class="form-label">Suburb</label>
+            <input type="text" class="form-control" id="suburb" v-bind:value="formData.suburb" />
+          </div>
+
           <div class="text-center">
             <button type="submit" class="btn btn-primary me-2">Submit</button>
             <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
