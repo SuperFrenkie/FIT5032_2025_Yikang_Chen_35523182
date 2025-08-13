@@ -16,6 +16,6 @@ export default defineConfig({
     }
   },
   base: process.env.NODE_ENV === 'production'
-    ? '/<repository-name>/'
+    ? '/FIT5032_2025_Yikang_Chen_35523182/'
     : '/'
 })
