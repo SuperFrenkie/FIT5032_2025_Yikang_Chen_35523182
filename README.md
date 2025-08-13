@@ -1,6 +1,10 @@
-# NoMash-Library
+# FIT5032_Week5 - Vue.js Project with CI/CD
 
 This template should help get you started developing with Vue 3 in Vite.
+
+## 🚀 Deployed with GitHub Actions & GitHub Pages
+
+This project is automatically deployed to GitHub Pages using GitHub Actions CI/CD pipeline.
 
 ## Recommended IDE Setup
 
